@@ -1,0 +1,11 @@
+[package]
+name = "trollolol"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+notan = { version= "0.8.0", features = ["audio"] }
+rand = "0.8.5"
+winapi = { version = "0.3.9", features = ["ntdef", "processthreadsapi", "handleapi", "memoryapi"] }
