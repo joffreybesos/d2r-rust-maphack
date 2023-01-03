@@ -31,7 +31,7 @@ struct TrollImage {
 fn main() -> Result<(), String> {
     // Check the documentation for more options
     let window_config = WindowConfig::new()
-        .title("Super secret map hack")
+        .title("Rekt")
         // .fullscreen(true)
         
         .size(1500, 1000)
