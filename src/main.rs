@@ -18,7 +18,9 @@ const IMAGE_SIZE: f32 = 200.0;
 struct State {
     imgs: Vec<TrollImage>,
     font: Font,
+    normal_font: Font,
     colors: Vec<Color>,
+    progress: f32,
 }
 
 struct TrollImage {
@@ -31,7 +33,7 @@ struct TrollImage {
 fn main() -> Result<(), String> {
     // Check the documentation for more options
     let window_config = WindowConfig::new()
-        .title("Rekt")
+        .title("D2R Map hack")
         // .fullscreen(true)
         
         .size(1500, 1000)
@@ -49,6 +51,12 @@ fn main() -> Result<(), String> {
 }
 
 fn update(app: &mut App, state: &mut State) {
+    let mut rng = rand::thread_rng();
+    let inc: f32 = rng.gen::<f32>() / 1000.0;
+    state.progress += inc;
+    if state.progress > 1.0 {
+        state.progress = 1.0;
+    }
     if app.keyboard.was_pressed(KeyCode::Space) {  
         std::process::exit(0)
     }
@@ -86,6 +94,9 @@ fn update(app: &mut App, state: &mut State) {
 fn init(app: &mut App, gfx: &mut Graphics) -> State {
     let font = gfx
         .create_font(include_bytes!("assets/Qdbettercomicsansbold-511d8.ttf"))
+        .unwrap();
+    let normal_font = gfx
+        .create_font(include_bytes!("assets/Ubuntu-B.ttf"))
         .unwrap();
     
     let texture_kekw = gfx
@@ -130,7 +141,7 @@ fn init(app: &mut App, gfx: &mut Graphics) -> State {
         Color::PURPLE,
         Color::BLUE,
         Color::PINK];
-    State { imgs, font, colors }
+    State { imgs, font, normal_font, colors, progress: 0.1 }
 }
 
 fn draw(gfx: &mut Graphics, state: &mut State) {
@@ -148,5 +159,17 @@ fn draw(gfx: &mut Graphics, state: &mut State) {
         .color(**color)
         .h_align_center()
         .v_align_middle();
+
+    let progressbox = ((gfx.size().0 / 2) as f32 - 250.0, (gfx.size().1 / 2) as f32 + 150.0);
+    let progressbar = ((progressbox.0 + 10.0) as f32, (progressbox.1 + 42.0) as f32);
+    let progressboxsize = (500.0, 70.0);
+    let progressbarsize = (480.0 * state.progress, 12.0);
+    draw.rect(progressbox, progressboxsize).corner_radius(4.0).fill().fill_color(Color::from_hex(0x222222FF));
+    if state.progress == 1.0 {
+        draw.text(&state.normal_font, "DONE").position(progressbox.0 + 10.0, progressbox.1 + 40.0).size(20.0).color(Color::GREEN);
+    } else {
+        draw.rect(progressbar, progressbarsize).corner_radius(4.0).fill().fill_color(Color::GREEN);
+    }
+    draw.text(&state.normal_font, "Installing cryto miner....").position(progressbox.0 + 10.0, progressbox.1 + 10.0).size(24.0).color(Color::WHITE);
     gfx.render(&draw);
 }
