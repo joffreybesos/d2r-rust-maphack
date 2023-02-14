@@ -166,7 +166,7 @@ fn draw(gfx: &mut Graphics, state: &mut State) {
     let progressbarsize = (480.0 * state.progress, 12.0);
     draw.rect(progressbox, progressboxsize).corner_radius(4.0).fill().fill_color(Color::from_hex(0x222222FF));
     if state.progress == 1.0 {
-        draw.text(&state.normal_font, "DONE").position(progressbox.0 + 10.0, progressbox.1 + 40.0).size(20.0).color(Color::GREEN);
+        draw.text(&state.normal_font, "JUST KIDDING").position(progressbox.0 + 10.0, progressbox.1 + 40.0).size(20.0).color(Color::GREEN);
     } else {
         draw.rect(progressbar, progressbarsize).corner_radius(4.0).fill().fill_color(Color::GREEN);
     }
